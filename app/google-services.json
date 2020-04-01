@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "200354072537",
+    "firebase_url": "https://videofiy.firebaseio.com",
+    "project_id": "videofiy",
+    "storage_bucket": "videofiy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200354072537:android:e4f2c524e57bdaf8243bc8",
+        "android_client_info": {
+          "package_name": "com.deb.videofy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200354072537-ujlpg0oflf775d823pdl5htvciv36nq1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deb.videofy",
+            "certificate_hash": "a811250c388194aec02d0be825f7c80a025040e0"
+          }
+        },
+        {
+          "client_id": "200354072537-3s6jukpe7ab46733ie8drpctbntep2f1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfDOwXavZQ3sB3YGuNdMD3-eE9UbB59zw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200354072537-3s6jukpe7ab46733ie8drpctbntep2f1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
