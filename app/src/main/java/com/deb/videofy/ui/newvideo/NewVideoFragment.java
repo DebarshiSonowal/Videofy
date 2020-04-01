@@ -1,4 +1,4 @@
-package com.deb.videofy.ui.slideshow;
+package com.deb.videofy.ui.newvideo;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,15 +14,15 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.deb.videofy.R;
 
-public class SlideshowFragment extends Fragment {
+public class NewVideoFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
+    private NewVideoViewModel slideshowViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         slideshowViewModel =
-                ViewModelProviders.of(this).get(SlideshowViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
+                ViewModelProviders.of(this).get(NewVideoViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_newvideos, container, false);
         final TextView textView = root.findViewById(R.id.text_slideshow);
         slideshowViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

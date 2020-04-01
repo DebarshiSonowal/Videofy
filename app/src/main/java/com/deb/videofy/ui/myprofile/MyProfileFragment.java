@@ -1,4 +1,4 @@
-package com.deb.videofy.ui.home;
+package com.deb.videofy.ui.myprofile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,19 +13,18 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.deb.videofy.R;
-import com.google.firebase.database.FirebaseDatabase;
+import com.deb.videofy.ui.home.HomeViewModel;
 
-public class HomeFragment extends Fragment {
-    FirebaseDatabase mFirebaseDatabase;
-    private HomeViewModel homeViewModel;
+public class MyProfileFragment extends Fragment {
+    private MyProfileViewModel myProfileViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+        myProfileViewModel =
+                ViewModelProviders.of(this).get(MyProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 //        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        myProfileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
 //                textView.setText(s);

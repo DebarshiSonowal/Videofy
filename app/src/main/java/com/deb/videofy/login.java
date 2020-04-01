@@ -99,7 +99,7 @@ public class login extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                    startActivity(new Intent(getApplicationContext(), Home.class));
                                 } else {
 
                                     Toast.makeText(login.this, "Login failed or User not Available", Toast.LENGTH_SHORT).show();
@@ -118,7 +118,7 @@ public class login extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() != null){
-                    startActivity(new Intent(login.this,MainActivity.class));
+                    startActivity(new Intent(login.this,Home.class));
                 }
             }
         };
