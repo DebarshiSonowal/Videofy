@@ -23,11 +23,11 @@ public class AllUsersFragment extends Fragment {
         mAllUsersViewModel =
                 ViewModelProviders.of(this).get(AllUsersViewModel.class);
         View root = inflater.inflate(R.layout.fragment_allusers, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
+
         mAllUsersViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+
             }
         });
         return root;
