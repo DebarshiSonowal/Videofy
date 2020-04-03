@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,11 +16,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private LayoutInflater mLayoutInflater;
     private List<String> data;
+    private String btntitle;
+    private Button mButton;
 
-    Adapter(Context context, List<String>data){
+    public Adapter(Context context, List<String> data, String btntitle){
 
         this.mLayoutInflater = LayoutInflater.from(context);
         this.data = data;
+        this.btntitle = btntitle;
 
     }
 
@@ -34,6 +38,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         String item_name1 = data.get(position);
         viewHolder.title.setText(item_name1);
+        viewHolder.mButton.setText(btntitle);
     }
 
 
@@ -44,13 +49,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return data.size();
     }
 
-    public  class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView title,amount;
+        Button mButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            title = itemView.findViewById(R.id.name);
+            mButton = itemView.findViewById(R.id.button2);
         }
     }
 }

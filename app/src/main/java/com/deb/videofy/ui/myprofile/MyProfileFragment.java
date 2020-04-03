@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.deb.videofy.R;
-import com.deb.videofy.ui.home.HomeViewModel;
+
 
 public class MyProfileFragment extends Fragment {
     private MyProfileViewModel myProfileViewModel;
@@ -22,7 +22,7 @@ public class MyProfileFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         myProfileViewModel =
                 ViewModelProviders.of(this).get(MyProfileViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        View root = inflater.inflate(R.layout.fragment_myprofile, container, false);
 //        final TextView textView = root.findViewById(R.id.text_home);
         myProfileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
