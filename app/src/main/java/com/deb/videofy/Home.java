@@ -6,11 +6,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
@@ -23,6 +25,12 @@ import androidx.appcompat.widget.Toolbar;
 
 public class Home extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
+    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Toast.makeText(this, mUser.getUid(), Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
