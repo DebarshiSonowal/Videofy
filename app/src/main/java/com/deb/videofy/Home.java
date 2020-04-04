@@ -26,6 +26,7 @@ import androidx.appcompat.widget.Toolbar;
 public class Home extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+    Boolean Admin = false;
     @Override
     protected void onStart() {
         super.onStart();
@@ -36,10 +37,23 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        if(mUser.getUid().equals("OspHadu29BSdph2zUbr8jzVLOg22")){
+            Admin = true;
+        }
+        else
+            Admin = false;
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        if(!Admin)
+        {
+            Menu menuNav=navigationView.getMenu();
+            MenuItem nav_item2 = menuNav.findItem(R.id.nav_alluser);
+            nav_item2.setEnabled(false);
+        }
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(

@@ -31,8 +31,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-public class videofile extends AppCompatActivity {
-    Button selectfile,uploadfile;
+public class audiofile extends AppCompatActivity {  Button selectfile,uploadfile;
     TextView notificatiom;
     Uri mUri;
     String uid;
@@ -58,12 +57,12 @@ public class videofile extends AppCompatActivity {
         selectfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ContextCompat.checkSelfPermission(videofile.this, Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED)
+                if(ContextCompat.checkSelfPermission(audiofile.this, Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED)
                 {
                     selectVideo();
                 }
                 else
-                    ActivityCompat.requestPermissions(videofile.this,new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},9);
+                    ActivityCompat.requestPermissions(audiofile.this,new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},9);
             }
         });
         uploadfile.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +71,7 @@ public class videofile extends AppCompatActivity {
                 if(mUri != null)
                     uploadvideo(mUri);
                 else
-                    Toast.makeText(videofile.this,"Please upload a file",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(audiofile.this,"Please upload a file",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -90,7 +89,7 @@ public class videofile extends AppCompatActivity {
 
         final String filename = System.currentTimeMillis()+"";
         StorageReference storageReference = mStorage.getReference();
-        storageReference.child("Uploads").child("Video").child(uid).child(filename).putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        storageReference.child("Uploads").child("Audio").child(uid).child(filename).putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
@@ -101,23 +100,23 @@ public class videofile extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful())
                         {
-                            Toast.makeText(videofile.this,"File Successfully uploaded",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(audiofile.this,"File Successfully uploaded",Toast.LENGTH_SHORT).show();
                         }
                         else
-                            Toast.makeText(videofile.this,"File not uploaded",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(audiofile.this,"File not uploaded",Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(videofile.this,"File not uploaded",Toast.LENGTH_SHORT).show();
+                Toast.makeText(audiofile.this,"File not uploaded",Toast.LENGTH_SHORT).show();
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                    int currentProgress = (int) (100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-                    mProgressDialog.setProgress(currentProgress);
+                int currentProgress = (int) (100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                mProgressDialog.setProgress(currentProgress);
             }
         });
     }
@@ -130,14 +129,14 @@ public class videofile extends AppCompatActivity {
 
         }
         else
-            Toast.makeText(videofile.this,"please give permission",Toast.LENGTH_SHORT).show();
+            Toast.makeText(audiofile.this,"please give permission",Toast.LENGTH_SHORT).show();
 
     }
 
     private void selectVideo() {
 
         Intent intent = new Intent();
-        intent.setType("video/*");
+        intent.setType("audio/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent,86);
     }
@@ -150,6 +149,6 @@ public class videofile extends AppCompatActivity {
             notificatiom.setText("A file is seleted "+data.getData().getLastPathSegment());
         }
         else
-            Toast.makeText(videofile.this,"Please upload a file",Toast.LENGTH_SHORT).show();
+            Toast.makeText(audiofile.this,"Please upload a file",Toast.LENGTH_SHORT).show();
     }
 }
