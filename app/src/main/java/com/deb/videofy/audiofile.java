@@ -31,7 +31,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-public class audiofile extends AppCompatActivity {  Button selectfile,uploadfile;
+public class audiofile extends AppCompatActivity {
+    Button selectfile,uploadfile;
     TextView notificatiom;
     Uri mUri;
     String uid;

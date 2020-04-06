@@ -28,4 +28,5 @@
     <string name="sign_in_or_sign_up">Sign in or Sign up</string>
     <string name="title_activity_home">Home</string>
     <string name="log_out">Log out</string>
+    <string name="video_audio">Video/Audio</string>
 </resources>
