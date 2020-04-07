@@ -31,12 +31,18 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class videofile extends AppCompatActivity {
     Button selectfile,uploadfile;
     TextView notificatiom;
     Uri mUri;
+    Date mDate = new Date();
     String uid;
     ProgressDialog mProgressDialog;
+    SimpleDateFormat sdf = new SimpleDateFormat("DD/MM/YY", Locale.getDefault());
     FirebaseStorage mStorage;
     FirebaseDatabase mDatabase;
     @Override
@@ -96,7 +102,18 @@ public class videofile extends AppCompatActivity {
                 String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
                 DatabaseReference reference = mDatabase.getReference();
 
-                reference.child(filename).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                reference.child("user").child(uid).child("Video") .child(filename).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful())
+                        {
+                            Toast.makeText(videofile.this,"File Successfully uploaded",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            Toast.makeText(videofile.this,"File not uploaded",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                reference.child("User").child(uid).child("Video") .child(filename).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful())
@@ -120,6 +137,7 @@ public class videofile extends AppCompatActivity {
                     mProgressDialog.setProgress(currentProgress);
             }
         });
+
     }
 
     @Override

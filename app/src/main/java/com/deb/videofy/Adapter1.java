@@ -35,17 +35,13 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         String item_name1 = data.get(position);
-        Integer upld1 = upld.get(position);
-        Integer dwnld1 = dwnld.get(position);
+        String upld1 =  upld.get(position).toString();
+        String dwnld1 = dwnld.get(position).toString();
 
-        viewHolder.upload.setText(upld1.toString());
-        viewHolder.download.setText(dwnld1.toString());
+        viewHolder.upload.setText(upld1);
+        viewHolder.download.setText(dwnld1);
         viewHolder.name.setText(item_name1);
     }
-
-
-
-
     @Override
     public int getItemCount() {
         return data.size();

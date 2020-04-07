@@ -95,8 +95,18 @@ public class audiofile extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
                 DatabaseReference reference = mDatabase.getReference();
-
-                reference.child(filename).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                reference.child("User").child(uid).child("Audio") .child(filename).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful())
+                        {
+                            Toast.makeText(audiofile.this,"File Successfully uploaded",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            Toast.makeText(audiofile.this,"File not uploaded",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                reference.child("user").child(uid).child("Audio") .child(filename).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful())
