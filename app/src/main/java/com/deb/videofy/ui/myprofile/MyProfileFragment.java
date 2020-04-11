@@ -29,7 +29,7 @@ import java.util.Map;
 
 
 public class MyProfileFragment extends Fragment {
-    private MyProfileViewModel myProfileViewModel;
+
     DatabaseReference toor;
     String aa;
     String name;
@@ -48,8 +48,6 @@ public class MyProfileFragment extends Fragment {
         email = currentFirebaseUser.getEmail();
         toor = FirebaseDatabase.getInstance().getReference().child("user");
         Toast.makeText(getContext(),uid,Toast.LENGTH_SHORT).show();
-        myProfileViewModel =
-                ViewModelProviders.of(this).get(MyProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_myprofile, container, false);
 //        final TextView textView = root.findViewById(R.id.text_home);
         final  TextView usnm = root.findViewById(R.id.usernm);
@@ -108,7 +106,7 @@ public class MyProfileFragment extends Fragment {
                                        @Override
                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                            for (DataSnapshot item : dataSnapshot.getChildren()) {
-                                               if (item.getKey().equals("1xfcI3rEV8h7f6QHefIABl7Fpwq2")) {
+//                                               if (item.getKey().equals("1xfcI3rEV8h7f6QHefIABl7Fpwq2")) {
                                                    for (DataSnapshot dataSnapshot1 : item.getChildren()) {
                                                        if (dataSnapshot1.getKey().equals("Email")) {
                                                            email = (String) dataSnapshot1.getValue();
@@ -121,7 +119,7 @@ public class MyProfileFragment extends Fragment {
                                                    }
                                                }
 
-                                           }
+//                                           }
 //                user = (String) dataSnapshot.child("Username").getValue();
 //                email = (String) dataSnapshot.child("Email").getValue();
 //            }
@@ -132,12 +130,7 @@ public class MyProfileFragment extends Fragment {
 
             }
         });
-        myProfileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
 
-            }
-        });
         return root;
     }
 

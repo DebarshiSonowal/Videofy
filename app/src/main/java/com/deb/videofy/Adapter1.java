@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class Adapter1 extends RecyclerView.Adapter<Adapter1.ViewHolder> {
-
+    String upld1 ;
     private LayoutInflater mLayoutInflater;
     private List<String> data;
     private List<Integer> upld;
@@ -35,7 +35,16 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         String item_name1 = data.get(position);
-        String upld1 =  upld.get(position).toString();
+
+//            position = position + 1;
+
+
+        try {
+            upld1 = upld.get(position).toString();
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+            upld1 = "0";
+        }
         String dwnld1 = dwnld.get(position).toString();
 
         viewHolder.upload.setText(upld1);

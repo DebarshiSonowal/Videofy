@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
@@ -28,6 +30,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class login extends AppCompatActivity {
     private static final int RC_SIGN_IN = 2;
@@ -36,7 +40,10 @@ public class login extends AppCompatActivity {
     Button btn_login,btn_signup;
     FirebaseAuth mAuth,firebaseAuth;
     GoogleApiClient mGoogleApiClient;
+    DatabaseReference root;
     FirebaseAuth.AuthStateListener mAuthListener;
+    String personName;
+    String personEmail;
 
     @Override
     protected void onStart() {
@@ -58,6 +65,7 @@ public class login extends AppCompatActivity {
         btn_signup = findViewById(R.id.signupbtn);
 
         //Instance
+        root = FirebaseDatabase.getInstance().getReference();
         firebaseAuth =FirebaseAuth.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
@@ -147,9 +155,16 @@ public class login extends AppCompatActivity {
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+                GoogleSignInAccount acct = result.getSignInAccount();
+                //TO USE
+                 personName = acct.getDisplayName();
+                 personEmail = acct.getEmail();
+                String personId = acct.getId();
+//                Uri personPhoto = acct.getPhotoUrl();
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -173,6 +188,13 @@ public class login extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            user muser = new user(personName,personEmail);
+                            FirebaseDatabase.getInstance().getReference("user")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .setValue(muser);
+                            FirebaseDatabase.getInstance().getReference("User")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .setValue(muser);
 //                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

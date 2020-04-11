@@ -12,9 +12,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.opengl.EGLDisplay;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +42,8 @@ import java.util.Locale;
 public class videofile extends AppCompatActivity {
     Button selectfile,uploadfile;
     TextView notificatiom;
+    EditText mEditText;
+    StorageReference filepath,storageReference;
     Uri mUri;
     Date mDate = new Date();
     String uid;
@@ -58,6 +64,7 @@ public class videofile extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
 
         selectfile = findViewById(R.id.selectbtn);
+        mEditText = findViewById(R.id.filename);
         uploadfile = findViewById(R.id.upload);
         notificatiom = findViewById(R.id.notify);
 
@@ -75,10 +82,16 @@ public class videofile extends AppCompatActivity {
         uploadfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mUri != null)
-                    uploadvideo(mUri);
-                else
-                    Toast.makeText(videofile.this,"Please upload a file",Toast.LENGTH_SHORT).show();
+               if(TextUtils.isEmpty(mEditText.getText())){
+                   Toast.makeText(videofile.this,"Enter the file name",Toast.LENGTH_SHORT).show();
+               }
+               else
+               {
+                   if(mUri != null)
+                       uploadvideo(mUri);
+                   else
+                       Toast.makeText(videofile.this,"Please upload a file",Toast.LENGTH_SHORT).show();
+               }
             }
         });
 
@@ -94,15 +107,41 @@ public class videofile extends AppCompatActivity {
         mProgressDialog.show();
 
 
-        final String filename = System.currentTimeMillis()+"";
-        StorageReference storageReference = mStorage.getReference();
-        storageReference.child("Uploads").child("Video").child(uid).child(filename).putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        final String filename =mEditText.getText().toString();
+       storageReference = mStorage.getReference();
+        filepath =  storageReference.child("Uploads").child("Video").child(uid).child(filename);
+        filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!urlTask.isSuccessful());
+                Uri downloadUrl = urlTask.getResult();
+                final String url = String.valueOf(downloadUrl);
+//                String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
                 DatabaseReference reference = mDatabase.getReference();
-
+                reference.child("User").child(uid).child("total") .child(filename).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful())
+                        {
+                            Toast.makeText(videofile.this,"File Successfully uploaded",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            Toast.makeText(videofile.this,"File not uploaded",Toast.LENGTH_SHORT).show();
+                    }
+                });
                 reference.child("user").child(uid).child("Video") .child(filename).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful())
+                        {
+                            Toast.makeText(videofile.this,"File Successfully uploaded",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            Toast.makeText(videofile.this,"File not uploaded",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                reference.child("Total files").child(filename).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful())

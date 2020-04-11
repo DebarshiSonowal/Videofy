@@ -37,8 +37,9 @@ public class AllUsersFragment extends Fragment {
     DatabaseReference root,local,store;
     FirebaseDatabase mFirebaseDatabase;
     Integer i;
+    Boolean flag = true;
     Integer m;
-    private AllUsersViewModel mAllUsersViewModel;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -50,40 +51,8 @@ public class AllUsersFragment extends Fragment {
 
         upld = new ArrayList<>();
         item = new ArrayList<>();
-        local.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
-                {
-                    for(DataSnapshot dataSnapshot2:dataSnapshot1.getChildren())
-                    {
-                        if("Username".equals(dataSnapshot2.getKey())){
-                            mString =(String) dataSnapshot2.getValue();
-                            item.add(mString);
-                        }
-                        if(("Video".equals(dataSnapshot2.getKey()))){
-                            if(dataSnapshot2.exists()) {
-                                upld.add((int) dataSnapshot2.getChildrenCount());
-                            }
-                            else
-                                upld.add(0);
-                        }
-                        if(("Audio".equals(dataSnapshot2.getKey()))){
-                            if(dataSnapshot2.exists()) {
-                                upld.add((int) dataSnapshot2.getChildrenCount());
-                            }
-                            else
-                                upld.add(0);
-                        }
-                    }
-                }
-            }
+        dwnld = new ArrayList<>();
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 //        store.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -97,42 +66,36 @@ public class AllUsersFragment extends Fragment {
 //
 //            }
 //        });
-        store.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
-                {
-                    if(dataSnapshot1.getKey().equals("Video"))
-                    {
+//        store.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
+//                {
+//                    if(dataSnapshot1.getKey().equals("Video"))
+//                    {
+//
+//                        upld.add((int)dataSnapshot1.getChildrenCount());
+//                        Log.d("Upload", String.valueOf(dataSnapshot1.getChildrenCount()));
+//
+//                    }
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
-                        upld.add((int)dataSnapshot1.getChildrenCount());
-                        Log.d("Upload", String.valueOf(dataSnapshot1.getChildrenCount()));
-
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
 
-        item.add("Second User");
-        item.add("Third User");
-        item.add("Forth User");
-        item.add("Five User");
 
 //        upld = new ArrayList<>();
 
-        upld.add(1321);
-        upld.add(633);
-        upld.add(978);
-        upld.add(23);
 
-        dwnld = new ArrayList<>();
+
+
         dwnld.add(453543);
         dwnld.add(53553);
         dwnld.add(6535);
@@ -141,22 +104,55 @@ public class AllUsersFragment extends Fragment {
 
 
 
-        mAllUsersViewModel =
-                ViewModelProviders.of(this).get(AllUsersViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_allusers, container, false);
         final RecyclerView mRecyclerView = root.findViewById(R.id.recyclerView);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter1 = new Adapter1(getLayoutInflater(),item,upld,dwnld);
-        mRecyclerView.setAdapter(mAdapter1);
-        mAllUsersViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        upld.clear();
+        local.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChanged(@Nullable String s) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
+                {
+                    Log.d("Flag Value 0", "" + dataSnapshot1.getKey());
+                    for(DataSnapshot dataSnapshot2:dataSnapshot1.getChildren())
+                    {
+                            if ("Username".equals(dataSnapshot2.getKey())) {
+                                mString = (String) dataSnapshot2.getValue();
+                                Log.d("Flag Value 1", "Username" + dataSnapshot2.getValue());
+                                item.add(mString);
+                            }
+                            if (("Video".equals(dataSnapshot2.getKey()))) {
+                                    Log.d("Flag Value 2", "Video  " + dataSnapshot2.getChildrenCount());
+                                    upld.add((int) dataSnapshot2.getChildrenCount());
+
+                            }
+
+//                            if(!dataSnapshot1.hasChild("Video")){
+//                                upld.add(0);
+//                              Log.d("Flag Value 3", "No  0");
+//                            }
+                        }
+                    if(item.size() != upld.size())
+                    {
+                        Log.d("Flag Value 3", "");
+                        upld.add(0);
+                    }
+                  }
+            mAdapter1 = new Adapter1(getLayoutInflater(),item,upld,dwnld);
+                mRecyclerView.setAdapter(mAdapter1);
+            };
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         return root;
     }
 }
