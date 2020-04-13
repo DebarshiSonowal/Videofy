@@ -19,12 +19,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.deb.videofy.ui.newvideo.NewVideoFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 
@@ -35,7 +40,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private List<String> link;
     private String btntitle,uid;
     private Button mButton;
-
+    private Date mDate = new Date();
+    Locale locale;
+    private SimpleDateFormat sdf = new SimpleDateFormat("DD/MM/YY",Locale.getDefault());
 
     public Adapter(Context context, List<String> data, String btntitle,List<String>link,String uid){
 
@@ -57,12 +64,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
-        String item_name1 = data.get(position);
+        final String item_name1 = data.get(position);
         viewHolder.title.setText(item_name1);
         viewHolder.mButton.setText(btntitle);
         viewHolder.mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                file nf = new file(sdf.format(mDate),item_name1);
                 DownloadManager downloadmanager = (DownloadManager) context.
                         getSystemService(Context.DOWNLOAD_SERVICE);
                 Uri uri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/videofiy.appspot.com/o/Uploads%2FVideo%2FOspHadu29BSdph2zUbr8jzVLOg22%2Fno?alt=media&token=3934536d-8f46-473d-908e-2789e3be1a04");
@@ -70,8 +78,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 request.setDestinationInExternalFilesDir(context, DIRECTORY_DOWNLOADS , data.get(position));
-
                 downloadmanager.enqueue(request);
+                FirebaseDatabase.getInstance().getReference().child("Downloaded").child(uid).push().setValue(nf);
             }
         });
     }

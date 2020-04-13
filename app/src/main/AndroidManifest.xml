@@ -12,9 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".audiofile">
+        <activity android:name=".upoadforuser">
 
         </activity>
+        <activity android:name=".audiofile"></activity>
         <activity android:name=".videofile">
 
             <!-- <intent-filter> -->
@@ -46,7 +47,7 @@
             <!-- </intent-filter> -->
 
         </activity>
-        <activity android:name=".signup"></activity>
+        <activity android:name=".signup" />
         <activity android:name=".login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
