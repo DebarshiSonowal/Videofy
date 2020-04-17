@@ -279,7 +279,9 @@ public class videofile extends AppCompatActivity {
                             Toast.makeText(videofile.this,"File not uploaded",Toast.LENGTH_SHORT).show();
                     }
                 });
+                finish();
             }
+
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
