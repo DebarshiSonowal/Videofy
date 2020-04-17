@@ -41,6 +41,7 @@ public class HomeFragment extends Fragment {
         final TextView mTextView = root.findViewById(R.id.ttlupd);
         final TextView nText = root.findViewById(R.id.ttlupdtoday);
         final  TextView textView = root.findViewById(R.id.ttluser);
+        final  TextView down = root.findViewById(R.id.ttlddwld);
         local = FirebaseDatabase.getInstance().getReference();
     local.child("Total files").addValueEventListener(new ValueEventListener() {
         @SuppressLint("SetTextI18n")
@@ -112,6 +113,19 @@ public class HomeFragment extends Fragment {
                         }
 
                     }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            local.child("Total files").child("Downloaded").addValueEventListener(new ValueEventListener() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    down.setText(Integer.toString((int) dataSnapshot.getChildrenCount()));
                 }
 
                 @Override

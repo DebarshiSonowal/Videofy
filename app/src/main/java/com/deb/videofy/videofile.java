@@ -232,6 +232,11 @@ public class videofile extends AppCompatActivity {
                 final String url = String.valueOf(downloadUrl);
 //                String url = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
                 DatabaseReference reference = mDatabase.getReference();
+                if(Admin)
+                {
+                    reference.child("User").child(muid).child("Video").child(filename).setValue(url);
+
+                }
                 reference.child("User").child(muid).child("total") .child(filename).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

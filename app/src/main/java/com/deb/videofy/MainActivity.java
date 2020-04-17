@@ -3,6 +3,9 @@ package com.deb.videofy;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.DownloadManager;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -29,11 +32,18 @@ import com.razorpay.RazorpayException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class MainActivity extends AppCompatActivity implements PaymentResultWithDataListener {
     private Button startpayment, mButton;
+    private SimpleDateFormat sdf = new SimpleDateFormat("DD/MM/YYYY", Locale.getDefault());
+    private Date mDate = new Date();
     private EditText orderamount;
     private String TAG =" main";
     paymentdetails paymentdetails;
@@ -113,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultWith
             customerdata.setName("Video4U");
             options.put("description", "App Payment");
             customerdata.setDescription("App Payment");
-            options.put("order_id","order_EfPG5vzHmdoWXg");
+//            options.put("order_id","order_EfBM3XAAQlrudd");
             //You can omit the image option to fetch the image from dashboard
             options.put("image", "https://rzp-mobile.s3.amazonaws.com/images/rzp.png");
             customerdata.setImage("https://rzp-mobile.s3.amazonaws.com/images/rzp.png");
@@ -160,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultWith
             paymentdetails.setEmail("awsdad@gmail.com");
             paymentdetails.setPhone("8638372157");
             paymentdetails.setCurrency("INR");
-            paymentdetails.setOrder_id("order_EfPG5vzHmdoWXg");
+            paymentdetails.setOrder_id("order_EfBM3XAAQlrudd");
             String payment = orderamount.getText().toString();
             double total = Double.parseDouble(payment);
             total = total * 100;
@@ -172,6 +182,21 @@ public class MainActivity extends AppCompatActivity implements PaymentResultWith
 //            opt.put("razorpay_payment_id",paymentData.getPaymentId());
 //            opt.put("razorpay_signature",paymentData.getSignature());
             local.child("Payments").child(paymentData.getPaymentId()).setValue(paymentdetails);
+            Bundle extras = getIntent().getExtras();
+            String item_name1 = extras.getString("name");
+            String link =  extras.getString("uri");
+            file nf = new file(sdf.format(mDate),item_name1);
+            DownloadManager downloadmanager = (DownloadManager) this.
+                    getSystemService(Context.DOWNLOAD_SERVICE);
+            Uri uri = Uri.parse(link);
+//                Uri uri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/videofiy.appspot.com/o/Uploads%2FVideo%2FOspHadu29BSdph2zUbr8jzVLOg22%2Fno?alt=media&token=3934536d-8f46-473d-908e-2789e3be1a04");
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setDestinationInExternalFilesDir(this, DIRECTORY_DOWNLOADS , item_name1);
+            downloadmanager.enqueue(request);
+            FirebaseDatabase.getInstance().getReference().child("Downloaded").child(uid).push().setValue(nf);
+            FirebaseDatabase.getInstance().getReference(). child("user").child(uid).child("Downloaded").push().setValue(nf);
+            FirebaseDatabase.getInstance().getReference(). child("Total files").child("Downloaded").push().setValue(nf);
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //        }
